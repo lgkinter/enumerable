@@ -50,6 +50,22 @@ module Enumerable
     count
   end
 
+  def my_map
+    map_arr = []
+    self.my_each {|num| map_arr.push(yield(num))}
+    map_arr
+  end
+
+  def my_inject(value = nil)
+    accumulator = value ||= 0
+    self.my_each {|num| accumulator = yield(accumulator, num)}
+    accumulator
+  end
+
+end
+
+def multiply_els(multiply_arr)
+  multiply_arr.my_inject(1) {|product, num| product * num}
 end
 
 puts "my_each:"
@@ -84,3 +100,13 @@ puts "count:"
 p [1,2,3].count
 p [1,2,3].count(2)
 p [1,2,3].count{|num| num % 2 == 0}
+puts "my_map:"
+p [1,2,3].my_map{|num| num ** 2}
+puts "map:"
+p [1,2,3].map{|num| num ** 2}
+puts "my_inject:"
+p [1,2,3].my_inject(4){|sum, num| sum + num}
+puts "inject:"
+p [1,2,3].inject(4){|sum, num| sum + num}
+puts "multiply_els:"
+p multiply_els([2,4,5])
