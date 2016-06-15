@@ -50,9 +50,17 @@ module Enumerable
     count
   end
 
-  def my_map
+  def my_map(proc = nil)
     map_arr = []
-    self.my_each {|num| map_arr.push(yield(num))}
+    if proc && block_given?
+      self.my_each {|num| map_arr.push(proc.call(yield(num)))}
+    elsif proc && !block_given?
+      self.my_each {|num| map_arr.push(proc.call(num))}
+    elsif proc.nil? && block_given?
+      self.my_each {|num| map_arr.push(yield(num))}
+    else
+      self
+    end
     map_arr
   end
 
@@ -102,8 +110,14 @@ p [1,2,3].count(2)
 p [1,2,3].count{|num| num % 2 == 0}
 puts "my_map:"
 p [1,2,3].my_map{|num| num ** 2}
+square = Proc.new {|num| num ** 2}
+p [1,2,3].my_map(&square)
+p [1,2,3].my_map(&square).my_map{|num| num ** 2}
 puts "map:"
 p [1,2,3].map{|num| num ** 2}
+square = Proc.new {|num| num ** 2}
+p [1,2,3].map(&square)
+p [1,2,3].map(&square).map{|num| num ** 2}
 puts "my_inject:"
 p [1,2,3].my_inject(4){|sum, num| sum + num}
 puts "inject:"
