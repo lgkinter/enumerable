@@ -33,6 +33,11 @@ module Enumerable
     return false
   end
 
+  def my_none?
+    self.my_each {|num| yield(num) ? (return false) : next }
+    return true
+  end
+
 end
 
 puts "my_each:"
@@ -55,3 +60,7 @@ puts "my_any?:"
 p [1,2,3].my_any?{|num| num > 3}
 puts "any?:"
 p [1,2,3].any?{|num| num > 3}
+puts "my_none?:"
+p [1,2,3].my_none?{|num| num > 3}
+puts "none?:"
+p [1,2,3].none?{|num| num > 3}
