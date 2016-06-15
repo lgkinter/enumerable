@@ -23,6 +23,16 @@ module Enumerable
     select_arr
   end
 
+  def my_all?
+    self.my_each { |num| yield(num) ? next : (return false) }
+    return true
+  end
+
+  def my_any?
+    self.my_each {|num| yield(num) ? (return true) : next }
+    return false
+  end
+
 end
 
 puts "my_each:"
@@ -37,3 +47,11 @@ puts "my_select:"
 p [1,2,3].my_select {|num| num < 2}
 puts "select:"
 p [1,2,3].select {|num| num < 2}
+puts "my_all?:"
+p [1,2,3].my_all?{|num| num > 0}
+puts "all?:"
+p [1,2,3].all?{|num| num > 0}
+puts "my_any?:"
+p [1,2,3].my_any?{|num| num > 3}
+puts "any?:"
+p [1,2,3].any?{|num| num > 3}
