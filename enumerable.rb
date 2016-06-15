@@ -38,6 +38,18 @@ module Enumerable
     return true
   end
 
+  def my_count(value = nil)
+    count = 0
+    if block_given?
+      self.my_each {|num| count += 1 if yield(num)}
+    elsif value.nil?
+      count = self.size
+    else
+      self.my_each {|num| count += 1 if num == value}
+    end
+    count
+  end
+
 end
 
 puts "my_each:"
@@ -64,3 +76,11 @@ puts "my_none?:"
 p [1,2,3].my_none?{|num| num > 3}
 puts "none?:"
 p [1,2,3].none?{|num| num > 3}
+puts "my_count:"
+p [1,2,3].my_count
+p [1,2,3].my_count(2)
+p [1,2,3].my_count{|num| num % 2 == 0}
+puts "count:"
+p [1,2,3].count
+p [1,2,3].count(2)
+p [1,2,3].count{|num| num % 2 == 0}
